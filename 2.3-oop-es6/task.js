@@ -96,7 +96,9 @@ class Library {
     if (foundIndex === -1) {
       return null;
     } else {
-      return this.books.splice(foundIndex, 1);
+      const foundBook = this.books[foundIndex];
+      this.books.splice(foundIndex, 1);
+      return foundBook;
     }
   }
 
