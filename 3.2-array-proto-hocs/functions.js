@@ -61,18 +61,18 @@ function compareArrays(arr1, arr2) {
 
 function memorize(fn, limit) {
   const memory = [];
-  
-  function newFunction (arguments) {
-    const found = memory.find(obj => compareArrays(obj.args, arguments));
-    if (found) {
-      return found.result;
-    } else {
-      memory.push({args: arguments, result: fn(arguments)});
-      if (memory.length > limit) {
-        memory.pop();
-      }
-    };
+  const found = memory.find(obj => compareArrays(obj.args, arguments));
+
+  if (found) {
+    return found.result;
+  } else {
+    memory.push({ args: arguments, result: fn(arguments) });
+    if (memory.length > limit) {
+      memory.pop();
+    }
   };
 
-  return fn();
+  return function (...args) {
+    return fn(args);
+  };
 };
