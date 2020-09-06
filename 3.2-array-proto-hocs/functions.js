@@ -52,27 +52,24 @@ function sum(...args) {
 }
 
 function compareArrays(arr1, arr2) {
-  if (arr1.length === arr2.length) {
-    return arr1.every(index => arr1[index] === arr2[index]);
-  } else {
-    return false;
-  }
+  return (arr1.length === arr2.length) && (arr1.every((arr1, index) => arr1[index] === arr2[index]));
 }
 
 function memorize(fn, limit) {
-  const memory = [];
-  const found = memory.find(obj => compareArrays(obj.args, arguments));
+  return function (...args) {
+    const memory = [];
+    const found = memory.find(obj => compareArrays(obj.args, arguments));
+    
+    if (found) {
+      return found.result;
+    }
 
-  if (found) {
-    return found.result;
-  } else {
     memory.push({ args: arguments, result: fn(arguments) });
+    
     if (memory.length > limit) {
       memory.pop();
     }
-  };
-
-  return function (...args) {
-    return fn(args);
+    
+    return fn(...args);
   };
 };
