@@ -10,7 +10,7 @@ const weapons = [
 ];
 
 function getNames() {
-  return weapons.map(weapon => weapon.name));
+  return weapons.map(weapon => weapon.name);
 }
 
 function getCountReliableWeapons(durability) {
@@ -56,15 +56,16 @@ function compareArrays(arr1, arr2) {
 }
 
 function memorize(fn, limit) {
-  return function (...args) {
-    const memory = [];
+  const memory = [];
+  
+  return function (...args) {   
     const found = memory.find(obj => compareArrays(obj.args, arguments));
     
     if (found) {
       return found.result;
     }
 
-    memory.push({ args: arguments, result: fn(arguments) });
+    memory.push({ args: arguments, result: fn(...arguments) });
     
     if (memory.length > limit) {
       memory.pop();
