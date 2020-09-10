@@ -57,7 +57,11 @@ function compareArrays(arr1, arr2) {
 
 function memorize(fn, limit) {
   const memory = [];
-  
+  const newMemoryObject = {
+    args: arguments,
+    result: fn(...arguments)
+  }
+
   return function (...args) {   
     const found = memory.find(obj => compareArrays(obj.args, arguments));
     
@@ -65,7 +69,7 @@ function memorize(fn, limit) {
       return found.result;
     }
 
-    memory.push({ args: arguments, result: fn(...arguments) });
+    memory.push(newMemoryObject);
     
     if (memory.length > limit) {
       memory.pop();
