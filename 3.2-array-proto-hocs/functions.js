@@ -57,24 +57,23 @@ function compareArrays(arr1, arr2) {
 
 function memorize(fn, limit) {
   const memory = [];
-  const newMemoryObject = {
-    args: arguments,
-    result: fn(...arguments)
-  }
 
-  return function (...args) {   
-    const found = memory.find(obj => compareArrays(obj.args, arguments));
-    
+  return function (...args) {
+    const found = memory.find(obj => compareArrays(obj.args, args));
+
     if (found) {
       return found.result;
     }
 
-    memory.push(newMemoryObject);
-    
+    memory.push({ args: args, result: fn(...args) });
+
     if (memory.length > limit) {
       memory.pop();
     }
-    
-    return fn(...args);
+
+    return memory[memory.length - 1].result;
   };
 };
+
+const sumM = sum(1, 1, 1);
+memorize(sumM, 2);
