@@ -35,33 +35,33 @@ class AlarmClock {
   }
 
   getCurrentFormattedTime() {
-    const hours = new Date().getHours().toString();
-    const minutes = new Date().getMinutes().toString();
+    let hours = new Date().getHours();
+    let minutes = new Date().getMinutes();
+    if (hours < 10) {
+      hours = `0${hours}`;
+    } else if (minutes < 10) {
+      minutes = `0${minutes}`
+    }
     return `${hours}:${minutes}`;
-
   }
 
   start() {
-    function checkClock() {
-      const currentFormattedTime = getCurrentFormattedTime();
-      if (currentFormattedTime === this.time) {
-        return this.callback;
-      } else {
-        return currentFormattedTime;
+    const checkClock = (clock) => {
+      if (this.getCurrentFormattedTime() === clock.time) {
+        return callback();
       }
     }
 
     if (!this.timerID) {
-      const newInterval = setInterval(() => {
-        timerID = this.alarmCollection.forEach(alarm => checkClock())
+      this.timerID = setInterval(() => {
+        return this.alarmCollection.forEach(clock => checkClock(clock))
       }, 500);
-      return newInterval;
     }
   }
 
   stop() {
     if (this.timerID) {
-      clearInterval(newInterval);
+      clearInterval(timerID);
       timerID = undefined;
     }
   }
@@ -71,7 +71,7 @@ class AlarmClock {
   }
 
   clearAlarms() {
-    clearInterval(this.newInterval);
+    stop();
     this.alarmCollection = [];
   }
 }
@@ -87,3 +87,5 @@ function testCase() {
   alarm1.clearAlarms();
   alarm1.printAlarms();
 }
+
+testCase();
